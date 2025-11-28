@@ -6,6 +6,8 @@ KUMPIL2R is an LLVM-based compiler pass that detects various memory safety error
 - **Heap Out-of-Bounds (OOB)**
 - **Use-After-Free (UAF)**
 - **Double Free**
+- **Buffer Overflow (e.g., scanf)**
+- **Pointer Arithmetic OOB**
 
 It uses a Shadow Memory technique and Redzones to validate memory accesses.
 
@@ -20,7 +22,7 @@ It uses a Shadow Memory technique and Redzones to validate memory accesses.
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/BaldDurumy/KUMPIL2R.git
    cd kumpil2r
    ```
 
@@ -57,7 +59,7 @@ To verify that KUMPIL2R is working correctly, run the built-in test suite:
 ./run.sh -test
 ```
 
-This will compile `test.c` and run 5 test cases (Stack OOB, Heap OOB, UAF, Double Free, Dynamic Stack OOB), expecting crashes or error reports for each.
+This will compile `test.c` and run 7 test cases (Stack OOB, Heap OOB, UAF, Double Free, Dynamic Stack OOB, Scanf BOF, Pointer Arithmetic OOB), expecting crashes or error reports for each.
 
 ## Project Structure
 
