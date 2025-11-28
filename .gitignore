@@ -1,0 +1,9 @@
+build/
+output
+.vscode/
+*.o
+*.so
+*.a
+*.bc
+*.ll
+*.d
