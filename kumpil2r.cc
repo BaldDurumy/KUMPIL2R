@@ -161,7 +161,7 @@ static Value *findBasePtr(Value *V, const DataLayout &DL, DenseSet<Value*>& Visi
 
     if (isa<AllocaInst>(V)) return V;
     if (isa<GlobalVariable>(V)) return nullptr;
-    if (isa<Argument>(V)) return nullptr;
+    if (isa<Argument>(V)) return V;
     if (isa<ConstantPointerNull>(V)) return nullptr;
     if (isa<CallBase>(V)) return V;
 
@@ -748,15 +748,12 @@ private:
             return true;
         }
 
-        if (auto *CB = dyn_cast<CallBase>(Base)) {
-            // Check if it is our malloc
-            Function *F = CB->getCalledFunction();
-            if (F) {
-                // errs() << "[DEBUG] isTrackedPointer: Base is Call to " << F->getName() << " for " << *Ptr << "\n";
-                if (F->getName() == "__kumpil2r_malloc") return true;
-            } else {
-                // errs() << "[DEBUG] isTrackedPointer: Base is Indirect Call for " << *Ptr << "\n";
-            }
+        if (isa<CallBase>(Base)) {
+            return true;
+        }
+
+        if (isa<Argument>(Base)) {
+            return true;
         }
 
         // errs() << "[DEBUG] isTrackedPointer: Base is " << *Base << " (Not tracked) for " << *Ptr << "\n";
