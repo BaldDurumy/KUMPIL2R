@@ -52,6 +52,27 @@ void test_double_free() {
     free(p); 
 }
 
+void test_scanf_bof() {
+    printf("[TEST] Scanf BOF (Buffer Overflow)\n");
+    char buf[8];
+    // 8바이트 버퍼에 긴 문자열 입력을 시도
+    // run.sh에서 "A" * 10 같은 입력을 주입해야 함
+    if (scanf("%s", buf) != 1) return;
+    
+    printf("  [FAIL] Should have crashed due to BOF!\n");
+}
+
+void test_pointer_arithmetic_oob() {
+    printf("[TEST] Pointer Arithmetic OOB\n");
+    char buf[8];
+    char *ptr = buf;
+    
+    // 포인터 연산으로 범위를 벗어남
+    ptr += 10; 
+    
+    *ptr = 'X'; // 역참조 시 탐지되어야 함
+}
+
 void test_uar() {
     printf("[TEST] Use-After-Return (Simulation)\n");
     // 실제 UAR은 함수 리턴 후 스택 포인터를 사용하는 것인데,
@@ -73,6 +94,8 @@ int main(int argc, char *argv[]) {
         printf("3: Use-After-Free\n");
         printf("4: Double Free\n");
         printf("5: Stack OOB (Dynamic)\n");
+        printf("6: Scanf BOF\n");
+        printf("7: Pointer Arithmetic OOB\n");
         return 0;
     }
 
@@ -83,6 +106,8 @@ int main(int argc, char *argv[]) {
         case 3: test_uaf(); break;
         case 4: test_double_free(); break;
         case 5: test_stack_oob_dynamic(); break;
+        case 6: test_scanf_bof(); break;
+        case 7: test_pointer_arithmetic_oob(); break;
         default: printf("Unknown test number\n"); break;
     }
     return 0;

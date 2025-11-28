@@ -89,8 +89,14 @@ if [ "$MODE" == "test" ]; then
     echo "[OK] Build Complete. Running tests..."
     set +e
     
-    for i in {1..5}; do
-        ./output $i
+    for i in {1..7}; do
+        # Test 6 requires input for scanf
+        if [ "$i" -eq 6 ]; then
+            echo "OVERFLOW_STRING_12345" | ./output $i
+        else
+            ./output $i
+        fi
+
         if [ $? -ne 0 ]; then
             echo "[OK]"
         else
